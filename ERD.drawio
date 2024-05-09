@@ -1,9 +1,12 @@
-<mxfile host="app.diagrams.net" modified="2024-05-09T07:24:47.657Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0" etag="d-PAA_xrGIKHr31fk_ib" version="24.3.1" type="github" pages="2">
+<mxfile host="app.diagrams.net" modified="2024-05-09T07:28:09.185Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0" etag="a2I8BBtzXfM5ArQ3fjfL" version="24.3.1" type="github" pages="2">
   <diagram id="R2lEEEUBdFMjLlhIrx00" name="Page-1">
     <mxGraphModel dx="556" dy="286" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3300" pageHeight="4681" math="0" shadow="0" extFonts="Permanent Marker^https://fonts.googleapis.com/css?family=Permanent+Marker">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="n6jcmOge1NITZxQGP7H6-8" value="" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;endArrow=none;endFill=0;shape=link;" edge="1" parent="1" source="E70gCUQWQF6eJFeZjDCX-1" target="n6jcmOge1NITZxQGP7H6-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="E70gCUQWQF6eJFeZjDCX-1" value="User" style="whiteSpace=wrap;html=1;align=center;" vertex="1" parent="1">
           <mxGeometry x="890" y="440" width="100" height="40" as="geometry" />
         </mxCell>
@@ -26,6 +29,21 @@
         </mxCell>
         <mxCell id="n6jcmOge1NITZxQGP7H6-3" value="Password" style="ellipse;whiteSpace=wrap;html=1;align=center;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;" vertex="1" parent="1">
           <mxGeometry x="990" y="340" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="n6jcmOge1NITZxQGP7H6-7" value="d" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="925" y="540" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="n6jcmOge1NITZxQGP7H6-12" value="" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;endArrow=none;endFill=0;" edge="1" parent="1" source="n6jcmOge1NITZxQGP7H6-11" target="n6jcmOge1NITZxQGP7H6-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n6jcmOge1NITZxQGP7H6-11" value="Customer" style="whiteSpace=wrap;html=1;align=center;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;" vertex="1" parent="1">
+          <mxGeometry x="800" y="640" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="n6jcmOge1NITZxQGP7H6-14" value="" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;endArrow=none;endFill=0;" edge="1" parent="1" source="n6jcmOge1NITZxQGP7H6-13" target="n6jcmOge1NITZxQGP7H6-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n6jcmOge1NITZxQGP7H6-13" value="Shops" style="whiteSpace=wrap;html=1;align=center;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;" vertex="1" parent="1">
+          <mxGeometry x="970" y="640" width="100" height="40" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
