@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-05-21T13:25:55.904Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0" etag="RIWDL6qKU_Mg7eNcrVCT" version="24.4.4" type="github" pages="3">
+<mxfile host="app.diagrams.net" modified="2024-05-21T13:54:05.736Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0" etag="BL9I6OJ4M8aILI-DBNIA" version="24.4.4" type="github" pages="3">
   <diagram id="R2lEEEUBdFMjLlhIrx00" name="Page-1">
     <mxGraphModel dx="709" dy="365" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3300" pageHeight="4681" math="0" shadow="0" extFonts="Permanent Marker^https://fonts.googleapis.com/css?family=Permanent+Marker">
       <root>
@@ -247,11 +247,11 @@
     </mxGraphModel>
   </diagram>
   <diagram id="Dj7HLXgyRzt6zqZD1bGl" name="第 3 页">
-    <mxGraphModel dx="1082" dy="557" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="4681" pageHeight="3300" math="0" shadow="0">
+    <mxGraphModel dx="411" dy="212" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="4681" pageHeight="3300" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="E77G0smWw9pdfAryQws4-1" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;要實作的功能&lt;/h1&gt;&lt;p&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Registration&lt;/li&gt;&lt;li&gt;Login&lt;/li&gt;&lt;li&gt;Rent&lt;/li&gt;&lt;li&gt;Return&lt;/li&gt;&lt;li&gt;Give Rewards&lt;/li&gt;&lt;li&gt;依使用次數更改租借上限&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;/p&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;" vertex="1" parent="1">
+        <mxCell id="E77G0smWw9pdfAryQws4-1" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;要實作的功能&lt;/h1&gt;&lt;p&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Registration&lt;/li&gt;&lt;li&gt;Login&lt;/li&gt;&lt;li&gt;Rent&lt;/li&gt;&lt;li&gt;TurnBack&lt;/li&gt;&lt;li&gt;Give Rewards&lt;/li&gt;&lt;li&gt;依使用次數更改租借上限&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;/p&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;" parent="1" vertex="1">
           <mxGeometry x="430" y="220" width="180" height="150" as="geometry" />
         </mxCell>
       </root>
