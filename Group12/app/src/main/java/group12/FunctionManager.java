@@ -1,7 +1,15 @@
 package group12;
 import java.sql.*;
 
+import org.checkerframework.checker.units.qual.C;
+
 public class FunctionManager {
+
+    public static final int UTENSIL_UNAVAILABLE = -1;
+    public static final int USER_SUSPENDED = -2;
+    public static final int USER_REACHED_LIMIT = -3;
+    public static final int SQL_EXCEPTION = -4;
+
 
     public Connection connectToDB(){
         String server = "jdbc:mysql://140.119.19.73:3315/";
@@ -71,7 +79,7 @@ public class FunctionManager {
         }
     }
 
-    public void rent(int CustomerID, int UtensilID){
+    public int rent(int CustomerID, int UtensilID){
         try {
             Connection conn = connectToDB();
             // check if the utensil is available
@@ -80,7 +88,7 @@ public class FunctionManager {
             ResultSet checkResult = checkUtensil.executeQuery();
             if(checkResult.getInt(1) != 0){
                 System.out.println("The utensil is not available.");
-                return;
+                return UTENSIL_UNAVAILABLE;
             }
 
             // check if the user is suspended
@@ -89,7 +97,7 @@ public class FunctionManager {
             ResultSet checkSuspentionResult = checkSuspention.executeQuery();
             if(checkSuspentionResult.getInt(1) == 1){
                 System.out.println("You are suspended.");
-                return;
+                return USER_SUSPENDED;
             }
 
             // check if the user has reached the set limit
@@ -102,7 +110,7 @@ public class FunctionManager {
             ResultSet checkRentResult = checkRent.executeQuery();
             if(checkRentResult.getInt(1) >= setLimit){
                 System.out.println("You have reached the set limit.");
-                return;
+                return USER_REACHED_LIMIT;
             }
 
             // rent the utensil
@@ -111,10 +119,42 @@ public class FunctionManager {
             rent.setInt(2, UtensilID);
             rent.executeUpdate();
 
-        } catch (Exception e) {
-            // TODO: handle exception
+            // get the rent ID
+            PreparedStatement getRentID = conn.prepareStatement("SELECT Rent_ID FROM RENTS WHERE Customer_ID = ? AND Utensil_ID = ? AND Returned = FALSE ORDER BY Rent_ID DESC LIMIT 1;");
+            getRentID.setInt(1, CustomerID);
+            getRentID.setInt(2, UtensilID);
+            ResultSet getRentIDResult = getRentID.executeQuery();
+            return getRentIDResult.getInt(1);
+
+        } catch (SQLException e) {
+            
+            e.printStackTrace();
+            return SQL_EXCEPTION;
         }
 
+    }
+
+    public void turnBack(int RentID){   
+        try{
+            Connection conn = connectToDB();
+            PreparedStatement turnBack = conn.prepareStatement("UPDATE RENTS SET Returned = TRUE WHERE Rent_ID = ?");
+            turnBack.setInt(1, RentID);
+            turnBack.executeUpdate();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void setLimit(int CustomerID, int limit){
+        try{
+            Connection conn = connectToDB();
+            PreparedStatement setLimit = conn.prepareStatement("UPDATE CUSTOMER SET Set_Limit = ? WHERE User_ID = ?");
+            setLimit.setInt(1, limit);
+            setLimit.setInt(2, CustomerID);
+            setLimit.executeUpdate();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
     }
 
 
