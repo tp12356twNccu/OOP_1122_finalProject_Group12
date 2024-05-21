@@ -1,3 +1,4 @@
+package group12;
 public interface Utensil {
     public void rent();
 

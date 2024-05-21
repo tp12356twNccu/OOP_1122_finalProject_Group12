@@ -71,7 +71,53 @@ public class FunctionManager {
         }
     }
 
-    
+    public void rent(int CustomerID, int UtensilID){
+        try {
+            Connection conn = connectToDB();
+            // check if the utensil is available
+            PreparedStatement checkUtensil = conn.prepareStatement("SELECT COUNT(Utensil_ID) FROM RENTS WHERE Utensil_ID = ? AND Returned = FALSE;");
+            checkUtensil.setInt(1, UtensilID);
+            ResultSet checkResult = checkUtensil.executeQuery();
+            if(checkResult.getInt(1) != 0){
+                System.out.println("The utensil is not available.");
+                return;
+            }
+
+            // check if the user is suspended
+            PreparedStatement checkSuspention = conn.prepareStatement("SELECT Suspended FROM CUSTOMER WHERE User_ID = ?;");
+            checkSuspention.setInt(1, CustomerID);
+            ResultSet checkSuspentionResult = checkSuspention.executeQuery();
+            if(checkSuspentionResult.getInt(1) == 1){
+                System.out.println("You are suspended.");
+                return;
+            }
+
+            // check if the user has reached the set limit
+            PreparedStatement checkLimit = conn.prepareStatement("SELECT Set_Limit FROM CUSTOMER WHERE User_ID = ?;");
+            checkLimit.setInt(1, CustomerID);
+            ResultSet checkLimitResult = checkLimit.executeQuery();
+            int setLimit = checkLimitResult.getInt(1);
+            PreparedStatement checkRent = conn.prepareStatement("SELECT COUNT(Rent_ID) FROM RENTS WHERE User_ID = ? AND Returned = FALSE;");
+            checkRent.setInt(1, CustomerID);
+            ResultSet checkRentResult = checkRent.executeQuery();
+            if(checkRentResult.getInt(1) >= setLimit){
+                System.out.println("You have reached the set limit.");
+                return;
+            }
+
+            // rent the utensil
+            PreparedStatement rent = conn.prepareStatement("INSERT INTO RENTS(Customer_ID, Utensil_ID, Returned) VALUES(?, ?, FALSE);");
+            rent.setInt(1, CustomerID);
+            rent.setInt(2, UtensilID);
+            rent.executeUpdate();
+
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+
+    }
+
+
 
 
 
