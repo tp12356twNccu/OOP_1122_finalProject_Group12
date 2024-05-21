@@ -1,4 +1,20 @@
 {
     "java.compile.nullAnalysis.mode": "automatic",
-    "java.configuration.updateBuildConfiguration": "interactive"
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "140.119.19.73",
+            "port": 3315,
+            "driver": "MySQL",
+            "name": "OOPDatabase",
+            "database": "111306095",
+            "username": "111306095",
+            "password": "068zd"
+        }
+    ]
 }
