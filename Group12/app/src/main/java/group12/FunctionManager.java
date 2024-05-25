@@ -3,6 +3,8 @@ import java.sql.*;
 
 import org.checkerframework.checker.units.qual.C;
 
+import com.mysql.cj.xdevapi.Result;
+
 public class FunctionManager {
 
     public static final int UTENSIL_UNAVAILABLE = -1;
@@ -12,25 +14,11 @@ public class FunctionManager {
 
 
     public Connection connectToDB(){
-        String server = "jdbc:mysql://140.119.19.73:3315/";
-        String database = "111306095";
-        String url = server + database + "?useSSL=false";
-        String username = "111306095";
-        String password = "068zd";
-        Connection conn = null;
-
-        try{
-            conn = DriverManager.getConnection(url, username, password);
-            return conn;
-
-        }catch(SQLException e){
-            e.printStackTrace();
-            return null;
-        }
+        return Main.getConn();
             
     }
 
-    public void registration(String name, String password){
+    public void registration(String name, String password) throws SQLException{
         // check if the name is already used
         String checkNameStat = "SELECT COUNT(User_ID) FROM CUSTOMER WHERE Name = ?;";
         try {
@@ -60,7 +48,7 @@ public class FunctionManager {
 
     }
 
-    public boolean login(String name, String password){
+    public boolean login(String name, String password) throws SQLException{
         String checkStat = "SELECT COUNT(User_ID) FROM CUSTOMER WHERE Name = ? AND Password = ?;";
         try {
             Connection conn = connectToDB();
@@ -79,7 +67,7 @@ public class FunctionManager {
         }
     }
 
-    public int rent(int CustomerID, int UtensilID){
+    public int rent(int CustomerID, int UtensilID) throws SQLException{
         try {
             Connection conn = connectToDB();
             // check if the utensil is available
@@ -134,7 +122,7 @@ public class FunctionManager {
 
     }
 
-    public void turnBack(int RentID){   
+    public void turnBack(int RentID) throws SQLException{   
         try{
             Connection conn = connectToDB();
             PreparedStatement turnBack = conn.prepareStatement("UPDATE RENTS SET Returned = TRUE WHERE Rent_ID = ?");
@@ -145,7 +133,7 @@ public class FunctionManager {
         }
     }
 
-    public void setLimit(int CustomerID, int limit){
+    public void setLimit(int CustomerID, int limit) throws SQLException{
         try{
             Connection conn = connectToDB();
             PreparedStatement setLimit = conn.prepareStatement("UPDATE CUSTOMER SET Set_Limit = ? WHERE User_ID = ?");
@@ -157,8 +145,37 @@ public class FunctionManager {
         }
     }
 
+    public void giveReward(int CustomerID, int RewardID) throws SQLException{ 
+        try {
+            Connection conn = connectToDB();
+            PreparedStatement giveReward = conn.prepareStatement("INSERT INTO ACHIEVEMENT(Customer, Reward) VALUES(?, ?)");
+            giveReward.setInt(1, CustomerID);
+            giveReward.setInt(2, RewardID);
+            giveReward.executeUpdate();
+        } catch (SQLException e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
+    }
 
+    public void showQueryResult(ResultSet resultSet) throws SQLException {
+        ResultSetMetaData metaData = resultSet.getMetaData();
+        int columnCount = metaData.getColumnCount();
 
+        // Print column names
+        for (int i = 1; i <= columnCount; i++) {
+            System.out.print(metaData.getColumnName(i) + "\t");
+        }
+        System.out.println();
+
+        // Print rows
+        while (resultSet.next()) {
+            for (int i = 1; i <= columnCount; i++) {
+                System.out.print(resultSet.getString(i) + "\t");
+            }
+            System.out.println();
+        }
+    }
 
 
 
