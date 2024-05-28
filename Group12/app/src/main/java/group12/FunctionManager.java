@@ -12,6 +12,11 @@ public class FunctionManager {
     public static final int USER_REACHED_LIMIT = -3;
     public static final int SQL_EXCEPTION = -4;
 
+    private Connection conn;
+    public FunctionManager(){
+        conn = connectToDB();
+    }
+
 
     public Connection connectToDB(){
         return Main.getConn();
@@ -22,7 +27,7 @@ public class FunctionManager {
         // check if the name is already used
         String checkNameStat = "SELECT COUNT(User_ID) FROM CUSTOMER WHERE Name = ?;";
         try {
-            Connection conn = connectToDB();
+            
             
             // check if the name is already used
             PreparedStatement checkName = conn.prepareStatement(checkNameStat);
@@ -51,7 +56,7 @@ public class FunctionManager {
     public boolean login(String name, String password) throws SQLException{
         String checkStat = "SELECT COUNT(User_ID) FROM CUSTOMER WHERE Name = ? AND Password = ?;";
         try {
-            Connection conn = connectToDB();
+            
             PreparedStatement check = conn.prepareStatement(checkStat);
             check.setString(1, name);
             check.setString(2, password);
@@ -69,7 +74,7 @@ public class FunctionManager {
 
     public int rent(int CustomerID, int UtensilID) throws SQLException{
         try {
-            Connection conn = connectToDB();
+            
             // check if the utensil is available
             PreparedStatement checkUtensil = conn.prepareStatement("SELECT COUNT(Utensil_ID) FROM RENTS WHERE Utensil_ID = ? AND Returned = FALSE;");
             checkUtensil.setInt(1, UtensilID);
@@ -141,7 +146,7 @@ public class FunctionManager {
 
     public ResultSet getRentedUtensil(int Customer_ID) throws SQLException{
         try {
-            Connection conn = connectToDB();
+            
             PreparedStatement getRentedItem = conn.prepareStatement("SELECT Renting_ID, RENTS.Utensil_ID, Utensil_Type FROM UTENSIL, RENTS " +
             "WHERE Customer_ID = ? " +
             "AND Returned = 0 " +
@@ -159,7 +164,7 @@ public class FunctionManager {
 
     public void turnBack(int RentID) throws SQLException{   
         try{
-            Connection conn = connectToDB();
+            
             PreparedStatement turnBack = conn.prepareStatement("UPDATE RENTS SET Returned = TRUE WHERE Rent_ID = ?");
             turnBack.setInt(1, RentID);
             turnBack.executeUpdate();
@@ -170,7 +175,7 @@ public class FunctionManager {
 
     public void setLimit(int CustomerID, int limit) throws SQLException{
         try{
-            Connection conn = connectToDB();
+            
             PreparedStatement setLimit = conn.prepareStatement("UPDATE CUSTOMER SET LunchSet_Limit = ? WHERE User_ID = ?");
             setLimit.setInt(1, limit);
             setLimit.setInt(2, CustomerID);
@@ -186,7 +191,7 @@ public class FunctionManager {
 
     public void giveReward(int CustomerID, int RewardID) throws SQLException{ 
         try {
-            Connection conn = connectToDB();
+            
             PreparedStatement giveReward = conn.prepareStatement("INSERT INTO ACHIEVEMENT(Customer, Reward) VALUES(?, ?)");
             giveReward.setInt(1, CustomerID);
             giveReward.setInt(2, RewardID);

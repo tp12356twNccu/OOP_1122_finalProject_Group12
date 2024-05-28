@@ -25,8 +25,23 @@ public class Main {
         try{
            conn = DriverManager.getConnection(url, username, password); 
 
+
+
+
+
+
+
+           
         }catch(SQLException e){
             e.printStackTrace();
+        }finally{
+            try{
+                if(conn != null){
+                    conn.close();
+                }
+            }catch(SQLException e){
+                e.printStackTrace();
+            }
         }
     }
 
