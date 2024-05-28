@@ -89,17 +89,34 @@ public class FunctionManager {
             }
 
             // check if the user has reached the set limit
-            PreparedStatement checkLimit = conn.prepareStatement("SELECT Set_Limit FROM CUSTOMER WHERE User_ID = ?;");
-            checkLimit.setInt(1, CustomerID);
-            ResultSet checkLimitResult = checkLimit.executeQuery();
-            int setLimit = checkLimitResult.getInt(1);
-            PreparedStatement checkRent = conn.prepareStatement("SELECT COUNT(Rent_ID) FROM RENTS WHERE User_ID = ? AND Returned = FALSE;");
-            checkRent.setInt(1, CustomerID);
-            ResultSet checkRentResult = checkRent.executeQuery();
-            if(checkRentResult.getInt(1) >= setLimit){
-                System.out.println("You have reached the set limit.");
+                // check which type of utensil is being rented
+            PreparedStatement checkType = conn.prepareStatement("SELECT Utensil_Type FROM UTENSIL WHERE Utensil_ID = ?;");
+            checkType.setInt(1, UtensilID);
+            ResultSet checkTypeResult = checkType.executeQuery();
+            char type = checkTypeResult.getString(1).charAt(0);
+                // check the limit
+
+            PreparedStatement getLimit = conn.prepareStatement("SELECT LunchSet_Limit, Cup_Limit FROM CUSTOMER WHERE User_ID = ?;");
+            getLimit.setInt(1, CustomerID);
+            ResultSet getLimitResult = getLimit.executeQuery();
+            int setLimit = getLimitResult.getInt(1);
+            
+
+            PreparedStatement checkRented = conn.prepareStatement("SELECT COUNT(UTENSIL.Utensil_ID) FROM UTENSIL, RENTS\r\n" + //
+                                "WHERE Customer_ID = ?\r\n" + //
+                                "    AND Returned = FALSE\r\n" + //
+                                "    AND UTENSIL.Utensil_ID = RENTS.Utensil_ID\r\n" + //
+                                "    AND Utensil_Type = '?';\r\n" + //
+                                "");
+            checkRented.setInt(1, CustomerID);
+            checkRented.setString(2, String.valueOf(type));
+            ResultSet checkRentedResult = checkRented.executeQuery();
+            if(checkRentedResult.getInt(1) >= setLimit){
+                System.out.println("You have reached the limit.");
                 return USER_REACHED_LIMIT;
             }
+
+            
 
             // rent the utensil
             PreparedStatement rent = conn.prepareStatement("INSERT INTO RENTS(Customer_ID, Utensil_ID, Returned) VALUES(?, ?, FALSE);");
@@ -122,6 +139,24 @@ public class FunctionManager {
 
     }
 
+    public ResultSet getRentedUtensil(int Customer_ID) throws SQLException{
+        try {
+            Connection conn = connectToDB();
+            PreparedStatement getRentedItem = conn.prepareStatement("SELECT Renting_ID, RENTS.Utensil_ID, Utensil_Type FROM UTENSIL, RENTS " +
+            "WHERE Customer_ID = ? " +
+            "AND Returned = 0 " +
+            "AND UTENSIL.Utensil_ID = RENTS.Utensil_ID;");
+            getRentedItem.setInt(1, Customer_ID);
+            ResultSet getRentedItemResult = getRentedItem.executeQuery();
+            return getRentedItemResult;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+            // TODO: handle exception
+        }
+    }
+
     public void turnBack(int RentID) throws SQLException{   
         try{
             Connection conn = connectToDB();
@@ -136,10 +171,14 @@ public class FunctionManager {
     public void setLimit(int CustomerID, int limit) throws SQLException{
         try{
             Connection conn = connectToDB();
-            PreparedStatement setLimit = conn.prepareStatement("UPDATE CUSTOMER SET Set_Limit = ? WHERE User_ID = ?");
+            PreparedStatement setLimit = conn.prepareStatement("UPDATE CUSTOMER SET LunchSet_Limit = ? WHERE User_ID = ?");
             setLimit.setInt(1, limit);
             setLimit.setInt(2, CustomerID);
             setLimit.executeUpdate();
+            PreparedStatement setCupLimit = conn.prepareStatement("UPDATE CUSTOMER SET Cup_Limit = ? WHERE User_ID = ?");
+            setCupLimit.setInt(1, limit);
+            setCupLimit.setInt(2, CustomerID);
+            setCupLimit.executeUpdate();
         }catch(SQLException e){
             e.printStackTrace();
         }
