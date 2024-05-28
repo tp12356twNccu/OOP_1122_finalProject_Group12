@@ -66,12 +66,6 @@ public class Customer {
             }
 
             
-
-            
-
-            
-           
-            
             /* 
             System.out.println("Please enter the Renting_ID of the utensil you want to turn back: ");
             int rentID = sc.nextInt();
@@ -127,7 +121,7 @@ public class Customer {
             checkUseTime.setInt(1, id);
             ResultSet checkUseTimeResult = checkUseTime.executeQuery();
             if(checkUseTimeResult.getInt(1) < 10){
-                System.out.println("You have not rented enough utensils.");
+                System.out.println("You have not done enought renting.\nPlease comeback after you've done 10 rentings.");
                 return;
             }
             else{
