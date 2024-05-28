@@ -80,7 +80,7 @@ public class FunctionManager {
             checkUtensil.setInt(1, UtensilID);
             ResultSet checkResult = checkUtensil.executeQuery();
             if(checkResult.getInt(1) != 0){
-                System.out.println("The utensil is not available.");
+                //System.out.println("The utensil is not available.");
                 return UTENSIL_UNAVAILABLE;
             }
 
@@ -89,7 +89,7 @@ public class FunctionManager {
             checkSuspention.setInt(1, CustomerID);
             ResultSet checkSuspentionResult = checkSuspention.executeQuery();
             if(checkSuspentionResult.getInt(1) == 1){
-                System.out.println("You are suspended.");
+                //System.out.println("You are suspended.");
                 return USER_SUSPENDED;
             }
 
@@ -117,7 +117,7 @@ public class FunctionManager {
             checkRented.setString(2, String.valueOf(type));
             ResultSet checkRentedResult = checkRented.executeQuery();
             if(checkRentedResult.getInt(1) >= setLimit){
-                System.out.println("You have reached the limit.");
+                //System.out.println("You have reached the limit.");
                 return USER_REACHED_LIMIT;
             }
 
