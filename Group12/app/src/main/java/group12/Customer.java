@@ -14,8 +14,10 @@ public class Customer {
 
     public void turnBack(){
         // show all rented utensils
+        Scanner sc = new Scanner(System.in);
         try {
             ArrayList<Utensil> rentedUtensils = new ArrayList<>();
+            ArrayList<Integer> rentIDList = new ArrayList<>();
             ResultSet UtensilRented = fm.getRentedUtensil(id);
             while(UtensilRented.next()){
                 if(UtensilRented.getString("Type").equals("Cup")){
@@ -26,32 +28,86 @@ public class Customer {
                     LunchSet lunchSet = new LunchSet(UtensilRented.getInt("Utensil_ID"));
                     rentedUtensils.add(lunchSet);
                 }
+                rentIDList.add(UtensilRented.getInt("Renting_ID"));
             }
             // show all rented utensils
-            for(Utensil utensil : rentedUtensils){
-                System.out.println(utensil);
-            }
+            fm.showQueryResult(UtensilRented);
 
             // ask user to choose which one to turn back
-            Scanner sc = new Scanner(System.in);
-            System.out.println("Please enter the ID of the utensil you want to turn back: ");
-            int utensilID = sc.nextInt();
+              // the following part will be implemented into the GUI, this is just a simple version
+              // before the GUI is implemented
 
+            System.out.println("Please enter the Renting_ID of the utensil you want to turn back: ");
+            int utensilID = sc.nextInt();
             // check if the utensil is rented by the user
-            for(int i = 0; i < rentedUtensils.size(); i++){
-                if(rentedUtensils.get(i).getID() == utensilID){
-                    rentedUtensils.get(i).turnBack();
-                    return;
+            Utensil utensiltoTurnBack = null;
+            do {
+                boolean rented = false;
+                for(Utensil i : rentedUtensils){
+                    if(i.getID() == utensilID){
+                        rented = true;
+                        utensiltoTurnBack = i;
+                        break;
+                    }
+                   
                 }
+                if (rented) {
+                    break;
+                }
+                else{
+                    System.out.println("You have not rented this utensil.");
+                    System.out.println("Please enter the Renting_ID of the utensil you want to turn back: ");
+                    utensilID = sc.nextInt();
+                }
+            } while (true);
+
+            if (utensiltoTurnBack != null) {
+                utensiltoTurnBack.turnBack();
             }
 
             
+
             
+
+            
+           
+            
+            /* 
+            System.out.println("Please enter the Renting_ID of the utensil you want to turn back: ");
+            int rentID = sc.nextInt();
+            // check if the utensil is rented by the user
+            do {
+                boolean rented = false;
+                for(Integer i : rentIDList){
+                    if(i == rentID){
+                        rented = true;
+                        break;
+                    }
+                   
+                }
+                if (rented) {
+                    break;
+                }
+                else{
+                    System.out.println("You have not rented this utensil.");
+                    System.out.println("Please enter the Renting_ID of the utensil you want to turn back: ");
+                    rentID = sc.nextInt();
+                }
+
+
+            } while (true);
+
+            // turn back the utensil
+            .turnBack(rentID);
+
+            */
 
 
             sc.close();
 
         } catch (Exception e) {
+            sc.close();
+            e.printStackTrace();
             // TODO: handle exception
         }
     }
