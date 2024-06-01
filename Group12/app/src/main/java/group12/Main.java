@@ -1,6 +1,8 @@
 package group12;
-import java.sql.*;
 
+import java.sql.*;
+import java.awt.*;
+import javax.swing.*;
 
 
 
@@ -13,8 +15,8 @@ public class Main {
     }
 
 
-
-
+    
+   
     public static void main(String[] args){
         String server = "jdbc:mysql://140.119.19.73:3315/";
         String database = "111306095";
@@ -28,6 +30,14 @@ public class Main {
         }catch(SQLException e){
             e.printStackTrace();
         }
+        //GUI
+        HomeFrame frame = new HomeFrame();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+	}
+
+
+
     }
 
-}
+
