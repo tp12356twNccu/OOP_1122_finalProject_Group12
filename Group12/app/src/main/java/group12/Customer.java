@@ -5,12 +5,23 @@ import java.util.Scanner;
 
 public class Customer {
     private int id;
-    private String name;
+     String name;
     private String password;
     private boolean suspended = false;
     private FunctionManager fm = new FunctionManager();
 
+    
 
+    
+
+    public void checkUserExist(String name) throws UserError {
+        fm.checkUserExist(name);
+    }
+
+    public void login(String name,String pw) throws SQLException{
+        fm.login(name, pw);
+        this.name=name;
+    }
 
     public void turnBack(){
         // show all rented utensils
@@ -134,9 +145,4 @@ public class Customer {
 
 
     }
-
-
-    
-    
-
 }

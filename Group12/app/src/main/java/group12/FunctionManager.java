@@ -23,9 +23,10 @@ public class FunctionManager {
             
     }
 
+
     public void registration(String name, String password) throws SQLException{
         // check if the name is already used
-        String checkNameStat = "SELECT COUNT(User_ID) FROM CUSTOMER WHERE Name = ?;";
+        String checkNameStat = String.format("SELECT COUNT(User_ID) FROM CUSTOMER WHERE Name = %s;",name);
         try {
             
             
@@ -52,6 +53,32 @@ public class FunctionManager {
 
 
     }
+
+    //登入時確認帳號存在
+    public void checkUserExist(String name) throws UserError {
+        String checkNameStat = "SELECT COUNT(User_ID) FROM CUSTOMER WHERE Name = ?;";
+        try {
+            Connection conn = connectToDB();
+            
+            // check if the name is already exist
+            PreparedStatement checkName = conn.prepareStatement(checkNameStat);
+            checkName.setString(1, name);
+            ResultSet checkNameResult = checkName.executeQuery();
+
+            if(checkNameResult.getInt(1) != 0){
+                return;
+            }else{
+                System.out.println("Can't find the user");
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+            
+        };
+        
+    }
+
+    
+
 
     public boolean login(String name, String password) throws SQLException{
         String checkStat = "SELECT COUNT(User_ID) FROM CUSTOMER WHERE Name = ? AND Password = ?;";
@@ -202,25 +229,40 @@ public class FunctionManager {
         }
     }
 
-    public void showQueryResult(ResultSet resultSet) throws SQLException {
+    public String showQueryResult(ResultSet resultSet) throws SQLException {
+        String result1="";
+        String result2="";
         ResultSetMetaData metaData = resultSet.getMetaData();
         int columnCount = metaData.getColumnCount();
 
         // Print column names
         for (int i = 1; i <= columnCount; i++) {
-            System.out.print(metaData.getColumnName(i) + "\t");
+            result1=String.format(metaData.getColumnName(i) + "\t\n");
         }
-        System.out.println();
+        
 
         // Print rows
         while (resultSet.next()) {
             for (int i = 1; i <= columnCount; i++) {
-                System.out.print(resultSet.getString(i) + "\t");
+                result2=String.format(resultSet.getString(i) + "\t\n");
+                
             }
-            System.out.println();
         }
+        return result1+result2;
     }
 
 
 
+}
+
+class UserError extends Exception {
+    public UserError(String Error) {
+        super(Error);
+    }
+}
+
+class PasswordError extends Exception {
+    public PasswordError(String Error) {
+        super(Error);
+    }
 }
