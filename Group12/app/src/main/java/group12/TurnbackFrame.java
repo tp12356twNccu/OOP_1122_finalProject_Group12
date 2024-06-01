@@ -25,7 +25,7 @@ public class TurnbackFrame extends JFrame {
         this.customer = customer;
         setTitle("Turnback");
         setSize(500, 300);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new FlowLayout());
         try {
             conn = Main.getConn();
@@ -43,28 +43,37 @@ public class TurnbackFrame extends JFrame {
         outputArea = new JTextArea(1, 12);
         outputArea.setEditable(false);
     
-        stat = conn.createStatement();
+        //stat = conn.createStatement();
 
-        //待確認query
-        String query = "SELECT * FROM RENTS";
+        // PROBLEM: There's something wrong here that prevents the components from constructing properly.
+        //String query = "SELECT * FROM RENTS;";
+        String query = "SELECT Renting_ID, Utensil_ID FROM RENTS WHERE Customer_ID = ? AND Returned = 0;";
+        PreparedStatement stat = conn.prepareStatement(query);
+        stat.setInt(1, customer.getID());
+
+        ResultSet r = stat.executeQuery();
+        outputArea.append(fm.showQueryResult(r));
+        r.close();
         
+        /*
         boolean success = stat.execute(query);
         if(success){
         	ResultSet r=stat.getResultSet();
         	outputArea.append(fm.showQueryResult(r));
         	r.close();
         }
+        */
     }
 
     private void createLabel() {
-        column1 = new JLabel("Customer ID");
-        column2=new JLabel("Utensil ID:");
+        //column1 = new JLabel("Customer ID");
+        column2=new JLabel("Please enter the ID of the utensil you want to turn back:");
         //借用頁面只讓使用者填寫Utensil ID?
         
     }
 
     private void createTextField() {
-        text1 = new JTextField(10);
+       // text1 = new JTextField(10);
         //text1應該要放UserName
         text2 = new JTextField(10);
     }
@@ -76,10 +85,32 @@ public class TurnbackFrame extends JFrame {
             public void actionPerformed(ActionEvent event) {
 
                 String query = "";
-                String utensilID = text1.getText();
+                String utensilID = text2.getText();
                 int uIDint = Integer.parseInt(utensilID);
+
+                Utensil utensil = new Cup(uIDint); // default to be a cup
+                try{
+                    PreparedStatement checkType = conn.prepareStatement("SELECT Utensil_Type FROM UTENSILS WHERE Utensiil_ID = ?;");
+                    checkType.setInt(1, uIDint);
+                    ResultSet checkTypeResult = checkType.executeQuery();
+                    checkTypeResult.next();
+                    String type = checkTypeResult.getString(1);
+                    if (type.equals("C")) {
+                        utensil = new Cup(uIDint);
+                    }
+                    else{
+                        utensil = new LunchSet(uIDint);
+                    }
+
+                }catch(SQLException e){
+                    outputArea.append("Database error: " + e.getMessage() + "\n");
+                }
+
+                utensil.turnBack();
+                
                 
                 // fm.turnBack(customer.getID(),uIDint);
+
                 
                 
                try { 
@@ -103,10 +134,11 @@ public class TurnbackFrame extends JFrame {
                }catch(SQLException e) {
             	   outputArea.append("Database error: " + e.getMessage() + "\n");
                }
-               InfoFrame infoFrame=new InfoFrame(customer);
+                InfoFrame infoFrame=new InfoFrame(customer);
                     
-                    infoFrame.setTurnbackLabel(utensilID);
-                    infoFrame.setVisible(true);
+                setVisible(false);
+                infoFrame.setTurnbackLabel(utensilID);
+                infoFrame.setVisible(true);
 
 
             }
@@ -119,11 +151,11 @@ public class TurnbackFrame extends JFrame {
         operatePanel = new JPanel(new GridLayout(3, 1));
         
         JPanel labelPanel = new JPanel(new GridLayout(1, 2));
-        labelPanel.add(column1);
+      //  labelPanel.add(column1);
         labelPanel.add(column2);
         
         JPanel textPanel = new JPanel(new GridLayout(1, 2));
-        textPanel.add(text1);
+      //  textPanel.add(text1);
         textPanel.add(text2);
         
         JPanel opePanel = new JPanel(new GridLayout(1, 1));

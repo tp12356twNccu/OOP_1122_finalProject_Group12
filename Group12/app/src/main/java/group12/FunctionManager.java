@@ -214,7 +214,7 @@ public class FunctionManager {
     public void turnBack(int RentID) throws SQLException{   
         try{
             
-            PreparedStatement turnBack = conn.prepareStatement("UPDATE RENTS SET Returned = TRUE WHERE Rent_ID = ?");
+            PreparedStatement turnBack = conn.prepareStatement("UPDATE RENTS SET Returned = TRUE WHERE Renting_ID = ?");
             turnBack.setInt(1, RentID);
             turnBack.executeUpdate();
         }catch(SQLException e){

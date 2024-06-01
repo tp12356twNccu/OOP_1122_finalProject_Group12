@@ -19,9 +19,10 @@ public class LunchSet implements Utensil {
         Connection conn = Main.getConn();
         try {
             //get renting ID;
-            PreparedStatement getRentingID = conn.prepareStatement("SELECT Renting_ID FROM Renting WHERE Utensil_ID = ? AND Returned = FALSE;");
+            PreparedStatement getRentingID = conn.prepareStatement("SELECT Renting_ID FROM RENTS WHERE Utensil_ID = ? AND Returned = FALSE;");
             getRentingID.setInt(1, lunchSetID);
             ResultSet getRentingIDResult = getRentingID.executeQuery();
+            getRentingIDResult.next();
             int rentingID = getRentingIDResult.getInt(1);
 
             fm.turnBack(rentingID);
