@@ -12,6 +12,7 @@ public class HomeFrame extends JFrame {
     private JPanel panel = (JPanel) this.getContentPane();
     private JRadioButton radio;
     private Customer customer;
+    private JPanel btnPanel = new JPanel();
 
     public HomeFrame(Customer customer) {
         setTitle("HOME");
@@ -22,24 +23,24 @@ public class HomeFrame extends JFrame {
     }
     
     private void createLayout() {
-        radio=new JRadioButton();
-        radio.add(btnTurnback);
-        radio.add(btnRent);
+        btnPanel.add(btnRent);
+        btnPanel.add(btnTurnback);
         setLayout(new BorderLayout(20, 40));
         getContentPane().add(new JPanel(), BorderLayout.NORTH);
-        getContentPane().add(radio, BorderLayout.CENTER);
+        getContentPane().add(btnPanel, BorderLayout.CENTER);
         getContentPane().add(new JPanel(), BorderLayout.SOUTH);
     }
    
     private void createBtn() {
 
-    	btnRent= new JButton("Lend ");
+    	btnRent= new JButton("Rent");
     	btnTurnback= new JButton("Turn back");
         
     	btnRent.addActionListener(new ActionListener(){
     		public void actionPerformed(ActionEvent e) {
-    			RentFrame rentFrame=new RentFrame();
+    			RentFrame rentFrame=new RentFrame(customer);
                 rentFrame.setVisible(true);
+                setVisible(false);
     		}
     	});
     	
@@ -47,6 +48,7 @@ public class HomeFrame extends JFrame {
     		public void actionPerformed(ActionEvent w) {
                 TurnbackFrame turnbackFrame=new TurnbackFrame();
                 turnbackFrame.setVisible(true);
+                setVisible(false);
             }
     	});
     }

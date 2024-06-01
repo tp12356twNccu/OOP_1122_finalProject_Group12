@@ -42,7 +42,7 @@ public class FunctionManager {
             if(checkNameResult.next() && checkNameResult.getInt(1) != 0){
 
 
-                System.out.println("The name is already used.");
+                JOptionPane.showMessageDialog(null, "The name is already used. Please try another one.", "Registration Failed", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -239,25 +239,25 @@ public class FunctionManager {
     }
 
     public String showQueryResult(ResultSet resultSet) throws SQLException {
-        String result1="";
-        String result2="";
+        StringBuilder result1 = new StringBuilder();
+        StringBuilder result2 = new StringBuilder();
         ResultSetMetaData metaData = resultSet.getMetaData();
         int columnCount = metaData.getColumnCount();
 
         // Print column names
         for (int i = 1; i <= columnCount; i++) {
-            result1=String.format(metaData.getColumnName(i) + "\t\n");
+            result1.append(metaData.getColumnName(i)).append("\t");
         }
-        
-
+        result1.append("\n");
+    
         // Print rows
         while (resultSet.next()) {
             for (int i = 1; i <= columnCount; i++) {
-                result2=String.format(resultSet.getString(i) + "\t\n");
-                
+                result2.append(resultSet.getString(i)).append("\t");
             }
+            result2.append("\n");
         }
-        return result1+result2;
+        return result1.toString() + result2.toString();
     }
 
 
