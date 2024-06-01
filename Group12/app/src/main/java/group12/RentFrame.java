@@ -109,6 +109,7 @@ public class RentFrame extends JFrame {
                */
 
             if(rentResult >= 0){
+                setVisible(false);
                 InfoFrame infoFrame=new InfoFrame(customer);
                     
                     infoFrame.setRentLabel(utensilIDString);

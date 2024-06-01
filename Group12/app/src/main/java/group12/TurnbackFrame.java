@@ -16,8 +16,28 @@ public class TurnbackFrame extends JFrame {
     private JButton commitButton;
     private Connection conn;
     private Statement stat;
+    private Customer customer;
 
     
+
+
+    public TurnbackFrame(Customer customer) {
+        this.customer = customer;
+        setTitle("Turnback");
+        setSize(500, 300);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLayout(new FlowLayout());
+        try {
+            conn = Main.getConn();
+            createLabel();
+            createTextField();
+            createButton();
+            createTextArea();
+            createLayout();
+        } catch (SQLException e) {
+            outputArea.append("Database error: " + e.getMessage() + "\n");
+        }
+    }
 
     private void createTextArea() throws SQLException {
         outputArea = new JTextArea(1, 12);
@@ -57,8 +77,9 @@ public class TurnbackFrame extends JFrame {
 
                 String query = "";
                 String utensilID = text1.getText();
-   
-                fm.turnBack(customerID,utensilID);
+                int uIDint = Integer.parseInt(utensilID);
+                
+                // fm.turnBack(customer.getID(),uIDint);
                 
                 
                try { 
@@ -82,7 +103,7 @@ public class TurnbackFrame extends JFrame {
                }catch(SQLException e) {
             	   outputArea.append("Database error: " + e.getMessage() + "\n");
                }
-               InfoFrame infoFrame=new InfoFrame();
+               InfoFrame infoFrame=new InfoFrame(customer);
                     
                     infoFrame.setTurnbackLabel(utensilID);
                     infoFrame.setVisible(true);

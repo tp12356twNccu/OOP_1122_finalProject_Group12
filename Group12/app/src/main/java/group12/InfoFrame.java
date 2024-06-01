@@ -36,6 +36,7 @@ public class InfoFrame extends JFrame{
     		public void actionPerformed(ActionEvent e) {
     			HomeFrame homeFrame=new HomeFrame(customer);
                 homeFrame.setVisible(true);
+                setVisible(false);
     		}
 
         });

@@ -46,7 +46,7 @@ public class HomeFrame extends JFrame {
     	
     	btnTurnback.addActionListener(new ActionListener() {
     		public void actionPerformed(ActionEvent w) {
-                TurnbackFrame turnbackFrame=new TurnbackFrame();
+                TurnbackFrame turnbackFrame=new TurnbackFrame(customer);
                 turnbackFrame.setVisible(true);
                 setVisible(false);
             }

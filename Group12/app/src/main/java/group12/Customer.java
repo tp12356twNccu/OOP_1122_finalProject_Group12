@@ -28,7 +28,7 @@ public class Customer {
             ResultSet idResult = getID.executeQuery();
             idResult.next();
             id = idResult.getInt(1);
-            PreparedStatement getSuspended = conn.prepareStatement("SELECT Suspended FROM CUSTOMER WHERE Customer_ID = ?;");
+            PreparedStatement getSuspended = conn.prepareStatement("SELECT Suspended FROM CUSTOMER WHERE User_ID = ?;");
             getSuspended.setInt(1, id);
             ResultSet suspendedResult = getSuspended.executeQuery();
             suspendedResult.next();
