@@ -7,9 +7,14 @@ import javax.swing.*;
 
 
 public class InfoFrame extends JFrame{
+    private Customer customer;
+    
+
     JButton btn;
     JLabel label=new JLabel("you rent sth");
-    public InfoFrame() {
+    public InfoFrame(Customer customer) {
+        this.customer = customer;
+
         setTitle("Info Frame");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(500, 300);
@@ -29,7 +34,7 @@ public class InfoFrame extends JFrame{
         btn=new JButton("continue");
         btn.addActionListener(new ActionListener(){
     		public void actionPerformed(ActionEvent e) {
-    			HomeFrame homeFrame=new HomeFrame();
+    			HomeFrame homeFrame=new HomeFrame(customer);
                 homeFrame.setVisible(true);
     		}
 

@@ -13,15 +13,41 @@ public class Customer {
     public Customer(String name, String password){
         this.name = name;
         this.password = password;
+        fetchData();
     }
 
     public int getID(){
         return id;
     }
 
-
+    private void fetchData(){
+        try {
+            Connection conn = fm.connectToDB();
+            PreparedStatement getID = conn.prepareStatement("SELECT User_ID FROM CUSTOMER WHERE Name = ?;");
+            getID.setString(1, name);
+            ResultSet idResult = getID.executeQuery();
+            idResult.next();
+            id = idResult.getInt(1);
+            PreparedStatement getSuspended = conn.prepareStatement("SELECT Suspended FROM CUSTOMER WHERE Customer_ID = ?;");
+            getSuspended.setInt(1, id);
+            ResultSet suspendedResult = getSuspended.executeQuery();
+            suspendedResult.next();
+            suspended = suspendedResult.getBoolean(1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     
+    public int rent(int UtensilID){
+        try {
+            return fm.rent(id, UtensilID);    
+        } catch (Exception e) {
+            return -1;
+            // TODO: handle exception
+        }
+        
+    }
 
     public void checkUserExist(String name) throws UserError {
         fm.checkUserExist(name);

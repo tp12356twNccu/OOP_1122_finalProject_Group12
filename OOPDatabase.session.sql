@@ -1,8 +1,1 @@
-SELECT * FROM UTENSIL
-WHERE Utensil_ID NOT IN (SELECT Utensil_ID FROM RENTS WHERE Returned = 0)
-ORDER BY Utensil_Type;
-
-
-
-
-
+SELECT * FROM RENTS;

@@ -115,8 +115,10 @@ public class FunctionManager {
             PreparedStatement checkUtensil = conn.prepareStatement("SELECT COUNT(Utensil_ID) FROM RENTS WHERE Utensil_ID = ? AND Returned = FALSE;");
             checkUtensil.setInt(1, UtensilID);
             ResultSet checkResult = checkUtensil.executeQuery();
+            checkResult.next();
             if(checkResult.getInt(1) != 0){
                 //System.out.println("The utensil is not available.");
+                JOptionPane.showMessageDialog(null, "The utensil is not available.", "Rent Failed", JOptionPane.ERROR_MESSAGE);
                 return UTENSIL_UNAVAILABLE;
             }
 
@@ -124,8 +126,10 @@ public class FunctionManager {
             PreparedStatement checkSuspention = conn.prepareStatement("SELECT Suspended FROM CUSTOMER WHERE User_ID = ?;");
             checkSuspention.setInt(1, CustomerID);
             ResultSet checkSuspentionResult = checkSuspention.executeQuery();
-            if(checkSuspentionResult.getInt(1) == 1){
+            checkSuspentionResult.next();
+            if(checkSuspentionResult.next() && checkSuspentionResult.getInt(1) == 1){
                 //System.out.println("You are suspended.");
+                JOptionPane.showMessageDialog(null, "You are suspended.", "Rent Failed", JOptionPane.ERROR_MESSAGE);
                 return USER_SUSPENDED;
             }
 
@@ -134,13 +138,19 @@ public class FunctionManager {
             PreparedStatement checkType = conn.prepareStatement("SELECT Utensil_Type FROM UTENSIL WHERE Utensil_ID = ?;");
             checkType.setInt(1, UtensilID);
             ResultSet checkTypeResult = checkType.executeQuery();
+            checkTypeResult.next();
             char type = checkTypeResult.getString(1).charAt(0);
                 // check the limit
 
             PreparedStatement getLimit = conn.prepareStatement("SELECT LunchSet_Limit, Cup_Limit FROM CUSTOMER WHERE User_ID = ?;");
             getLimit.setInt(1, CustomerID);
             ResultSet getLimitResult = getLimit.executeQuery();
-            int setLimit = getLimitResult.getInt(1);
+            int setLimit = 1;
+            if (getLimitResult.next()) {
+                setLimit = getLimitResult.getInt(1);    
+            }
+            
+            
             
 
             PreparedStatement checkRented = conn.prepareStatement("SELECT COUNT(UTENSIL.Utensil_ID) FROM UTENSIL, RENTS\r\n" + //
@@ -150,10 +160,12 @@ public class FunctionManager {
                                 "    AND Utensil_Type = '?';\r\n" + //
                                 "");
             checkRented.setInt(1, CustomerID);
-            checkRented.setString(2, String.valueOf(type));
+            checkRented.setString(1, String.valueOf(type));
             ResultSet checkRentedResult = checkRented.executeQuery();
-            if(checkRentedResult.getInt(1) >= setLimit){
+            
+            if(checkRentedResult.next() && checkRentedResult.getInt(1) >= setLimit){
                 //System.out.println("You have reached the limit.");
+                JOptionPane.showMessageDialog(null, "You have reached the limit.", "Rent Failed", JOptionPane.ERROR_MESSAGE);
                 return USER_REACHED_LIMIT;
             }
 
@@ -166,10 +178,11 @@ public class FunctionManager {
             rent.executeUpdate();
 
             // get the rent ID
-            PreparedStatement getRentID = conn.prepareStatement("SELECT Rent_ID FROM RENTS WHERE Customer_ID = ? AND Utensil_ID = ? AND Returned = FALSE ORDER BY Rent_ID DESC LIMIT 1;");
+            PreparedStatement getRentID = conn.prepareStatement("SELECT Renting_ID FROM RENTS WHERE Customer_ID = ? AND Utensil_ID = ? AND Returned = FALSE ORDER BY Renting_ID DESC LIMIT 1;");
             getRentID.setInt(1, CustomerID);
             getRentID.setInt(2, UtensilID);
             ResultSet getRentIDResult = getRentID.executeQuery();
+            getRentIDResult.next();
             return getRentIDResult.getInt(1);
 
         } catch (SQLException e) {

@@ -42,12 +42,18 @@ public class Main {
         }catch(SQLException e){
             System.out.println("Connection failed");
             e.printStackTrace();
-        }finally{
-            // programme ending
-            
-            
-            
         }
+
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            public void run() {
+                try {
+                    conn.close();
+                    System.out.println("Connection closed");
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
 
 

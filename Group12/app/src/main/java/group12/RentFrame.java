@@ -77,12 +77,14 @@ public class RentFrame extends JFrame {
             public void actionPerformed(ActionEvent event) {
 
                 String query = "";
-                String utensilID = text1.getText();
+                String utensilIDString = text2.getText();
+                int utensilID = Integer.parseInt(utensilIDString);
 
-   
+
+                int rentResult = customer.rent(utensilID);
                 //fm.rent(customer.getID(),utensilID);
                 
-                
+               /* 
                try { 
                     stat = conn.createStatement();
                     query = String.format("???");
@@ -104,10 +106,15 @@ public class RentFrame extends JFrame {
                }catch(SQLException e) {
             	   outputArea.append("Database error: " + e.getMessage() + "\n");
                }
-               InfoFrame infoFrame=new InfoFrame();
+               */
+
+            if(rentResult >= 0){
+                InfoFrame infoFrame=new InfoFrame(customer);
                     
-                    infoFrame.setRentLabel(utensilID);
+                    infoFrame.setRentLabel(utensilIDString);
                     infoFrame.setVisible(true);
+            }
+               
 
 
             }
