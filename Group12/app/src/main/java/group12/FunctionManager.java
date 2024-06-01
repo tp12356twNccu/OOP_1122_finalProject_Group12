@@ -1,6 +1,9 @@
 package group12;
 import java.sql.*;
 
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
 import org.checkerframework.checker.units.qual.C;
 
 import com.mysql.cj.xdevapi.Result;
@@ -26,7 +29,9 @@ public class FunctionManager {
 
     public void registration(String name, String password) throws SQLException{
         // check if the name is already used
-        String checkNameStat = String.format("SELECT COUNT(User_ID) FROM CUSTOMER WHERE Name = %s;",name);
+
+        Connection conn = connectToDB();
+        String checkNameStat = String.format("SELECT COUNT(User_ID) FROM CUSTOMER WHERE Name = ?;",name);
         try {
             
             
@@ -34,7 +39,7 @@ public class FunctionManager {
             PreparedStatement checkName = conn.prepareStatement(checkNameStat);
             checkName.setString(1, name);
             ResultSet checkNameResult = checkName.executeQuery();
-            if(checkNameResult.getInt(1) != 0){
+            if(checkNameResult.next() && checkNameResult.getInt(1) != 0){
 
 
                 System.out.println("The name is already used.");
@@ -42,10 +47,13 @@ public class FunctionManager {
             }
 
             // insert the new user
-            PreparedStatement insertUser = conn.prepareStatement("INSERT INTO CUSTOMER(Name, Password, Set_Limit, Suspended) VALUES(?, ?, 1, 0);");
+            PreparedStatement insertUser = conn.prepareStatement("INSERT INTO CUSTOMER(Name, Password, LunchSet_Limit, Cup_Limit, Suspended) VALUES(?, ?, 1, 1, 0);");
             insertUser.setString(1, name);
             insertUser.setString(2, password);
             insertUser.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Registered successfully. Please press \"Login\" to start using the system.", "Registration Success", JOptionPane.INFORMATION_MESSAGE);
+        
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -88,6 +96,7 @@ public class FunctionManager {
             check.setString(1, name);
             check.setString(2, password);
             ResultSet checkResult = check.executeQuery();
+            checkResult.next();
             if(checkResult.getInt(1) == 1){
                 return true;
             }else{

@@ -10,7 +10,12 @@ public class Customer {
     private boolean suspended = false;
     private FunctionManager fm = new FunctionManager();
 
-    
+    public Customer(String name, String password){
+        this.name = name;
+        this.password = password;
+    }
+
+
 
     
 
@@ -18,9 +23,8 @@ public class Customer {
         fm.checkUserExist(name);
     }
 
-    public void login(String name,String pw) throws SQLException{
-        fm.login(name, pw);
-        this.name=name;
+    public boolean login() throws SQLException{
+        return fm.login(name, password);
     }
 
     public void turnBack(){

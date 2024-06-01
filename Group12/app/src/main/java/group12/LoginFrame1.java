@@ -12,7 +12,6 @@ public class LoginFrame1 extends JFrame {
     private JButton btnEnroll, btnLogin;
     private JTextField tfUserName, tfPassword;
 
-    private Customer customer=new Customer();
     private JPanel panel = (JPanel) this.getContentPane();
 
 
@@ -67,8 +66,13 @@ public class LoginFrame1 extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String name = tfUserName.getText();
                 String pw = tfPassword.getText();
-                fm.registration(name, pw);
-                //Unhandled exception
+                try {
+                    fm.registration(name, pw);    
+                } catch (Exception e2) {
+                    e2.printStackTrace();
+                }
+                
+                
             }
         });
 
@@ -77,10 +81,23 @@ public class LoginFrame1 extends JFrame {
                 String name = tfUserName.getText();
                 String pw = tfPassword.getText();
                 try {
-                    fm.login(name, pw);
-                    HomeFrame home = new HomeFrame();
                     
-                    home.setVisible(true);
+                    Customer customer = new Customer(name, pw);
+                    boolean loginSuccess = customer.login();
+                    if(loginSuccess){
+                        HomeFrame homeFrame = new HomeFrame(customer);
+                        homeFrame.setVisible(true);
+                        LoginFrame1.this.setVisible(false);
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(LoginFrame1.this, "Login failed: " + "Wrong username or password", "Error", JOptionPane.ERROR_MESSAGE);
+                    }                  
+
+                    
+
+                    
+
+
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     JOptionPane.showMessageDialog(LoginFrame1.this, "Login failed: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -93,11 +110,5 @@ public class LoginFrame1 extends JFrame {
     	
     	
     }
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                new LoginFrame1().setVisible(true);
-            }
-        });
-    }
+    
 }

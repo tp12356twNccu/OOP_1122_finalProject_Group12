@@ -25,8 +25,13 @@ public class Main {
         String password = "068zd";
 
         try{
-           conn = DriverManager.getConnection(url, username, password); 
-
+            conn = DriverManager.getConnection(url, username, password); 
+            System.out.println("Connection success");
+            LoginFrame1 loginFrame = new LoginFrame1();
+            loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            loginFrame.setVisible(true);
+            
+           
 
 
 
@@ -35,24 +40,21 @@ public class Main {
 
            
         }catch(SQLException e){
+            System.out.println("Connection failed");
             e.printStackTrace();
         }finally{
-            try{
-                if(conn != null){
-                    conn.close();
-                }
-            }catch(SQLException e){
-                e.printStackTrace();
-            }
+            // programme ending
+            
+            
+            
         }
-        //GUI
-        HomeFrame frame = new HomeFrame();
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
-	}
 
 
 
+
+        
     }
+
+}
 
 

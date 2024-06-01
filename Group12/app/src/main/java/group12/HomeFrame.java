@@ -11,12 +11,14 @@ public class HomeFrame extends JFrame {
     private JButton btnRent, btnTurnback;
     private JPanel panel = (JPanel) this.getContentPane();
     private JRadioButton radio;
+    private Customer customer;
 
-    public HomeFrame() {
+    public HomeFrame(Customer customer) {
         setTitle("HOME");
         setSize(500, 300);    
         createBtn();
         createLayout();
+        this.customer = customer;
     }
     
     private void createLayout() {
