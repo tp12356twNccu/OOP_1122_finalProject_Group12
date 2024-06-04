@@ -18,7 +18,7 @@ public class InfoFrame extends JFrame{
         setTitle("Info Frame");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(500, 300);
-        label.setFont(new Font("TimesRoman", Font.PLAIN, 60));
+        label.setFont(new Font("TimesRoman", Font.PLAIN, 30));
 
         JPanel helloPanel = new JPanel();
         createBtn();
