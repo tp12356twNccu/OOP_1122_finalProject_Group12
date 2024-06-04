@@ -11,8 +11,8 @@ public class TurnbackFrame extends JFrame {
     private FunctionManager fm=new FunctionManager();
     private JPanel flowPanel, operatePanel;
     private JTextArea outputArea;
-    private JLabel column1, column2;
-    private JTextField text1, text2;
+    private JLabel column2;
+    private JTextField text2;
     private JButton commitButton;
     private Connection conn;
     private Statement stat;

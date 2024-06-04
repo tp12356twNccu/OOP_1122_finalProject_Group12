@@ -153,17 +153,19 @@ public class FunctionManager {
             
             
 
-            PreparedStatement checkRented = conn.prepareStatement("SELECT COUNT(UTENSIL.Utensil_ID) FROM UTENSIL, RENTS\r\n" + //
-                                "WHERE Customer_ID = ?\r\n" + //
-                                "    AND Returned = FALSE\r\n" + //
-                                "    AND UTENSIL.Utensil_ID = RENTS.Utensil_ID\r\n" + //
-                                "    AND Utensil_Type = '?';\r\n" + //
-                                "");
-            checkRented.setInt(1, CustomerID);
-            checkRented.setString(1, String.valueOf(type));
-            ResultSet checkRentedResult = checkRented.executeQuery();
+            PreparedStatement checkRented = conn.prepareStatement("SELECT COUNT(Renting_ID) \r\n" + //
+                                "FROM RENTS JOIN UTENSIL ON UTENSIL.Utensil_ID = RENTS.Utensil_ID \r\n" + //
+                                "WHERE Utensil_Type = ? \r\n" + //
+                                "    AND Returned = 0\r\n" + //
+                                "    AND Customer_ID = ?;");
             
-            if(checkRentedResult.next() && checkRentedResult.getInt(1) >= setLimit){
+            checkRented.setString(1, String.valueOf(type));
+            checkRented.setInt(2, CustomerID);
+            ResultSet checkRentedResult = checkRented.executeQuery();
+            checkRentedResult.next();
+            int rented = checkRentedResult.getInt(1);
+            
+            if(rented >= setLimit){
                 //System.out.println("You have reached the limit.");
                 JOptionPane.showMessageDialog(null, "You have reached the limit.", "Rent Failed", JOptionPane.ERROR_MESSAGE);
                 return USER_REACHED_LIMIT;
