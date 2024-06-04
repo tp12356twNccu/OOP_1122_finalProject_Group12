@@ -179,6 +179,7 @@ public class FunctionManager {
             rent.setInt(2, UtensilID);
             rent.executeUpdate();
 
+
             // get the rent ID
             PreparedStatement getRentID = conn.prepareStatement("SELECT Renting_ID FROM RENTS WHERE Customer_ID = ? AND Utensil_ID = ? AND Returned = FALSE ORDER BY Renting_ID DESC LIMIT 1;");
             getRentID.setInt(1, CustomerID);
@@ -275,9 +276,16 @@ public class FunctionManager {
         return result1.toString() + result2.toString();
     }
 
+    
 
 
 }
+
+
+
+
+
+
 
 class UserError extends Exception {
     public UserError(String Error) {
@@ -286,7 +294,9 @@ class UserError extends Exception {
 }
 
 class PasswordError extends Exception {
+
     public PasswordError(String Error) {
         super(Error);
     }
 }
+

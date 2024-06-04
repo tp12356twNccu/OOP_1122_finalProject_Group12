@@ -13,7 +13,7 @@ public class TurnbackFrame extends JFrame {
     private JTextArea outputArea;
     private JLabel column2;
     private JTextField text2;
-    private JButton commitButton;
+    private JButton commitButton, lastPageButton;
     private Connection conn;
     private Statement stat;
     private Customer customer;
@@ -107,6 +107,7 @@ public class TurnbackFrame extends JFrame {
                 }
 
                 utensil.turnBack();
+                Reward.checkAndGiveReward(customer);
                 
                 
                 // fm.turnBack(customer.getID(),uIDint);
@@ -129,6 +130,11 @@ public class TurnbackFrame extends JFrame {
                         }
 	                   }
 
+                    // check and give reward
+                    
+
+                       
+
                     
                     
                }catch(SQLException e) {
@@ -144,6 +150,14 @@ public class TurnbackFrame extends JFrame {
             }
         });
 
+        lastPageButton = new JButton("Back to Last Page");
+        lastPageButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event){
+                HomeFrame homeFrame=new HomeFrame(customer);
+                homeFrame.setVisible(true);
+                setVisible(false);
+            }
+        });
        
     }
     private void createLayout() {
@@ -161,6 +175,7 @@ public class TurnbackFrame extends JFrame {
         JPanel opePanel = new JPanel(new GridLayout(1, 1));
         
         opePanel.add(commitButton);
+        opePanel.add(lastPageButton);
         
         operatePanel.add(labelPanel);
         operatePanel.add(textPanel);

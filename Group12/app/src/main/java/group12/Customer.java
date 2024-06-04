@@ -57,6 +57,7 @@ public class Customer {
         return fm.login(name, password);
     }
 
+    // not used in the current version
     public void turnBack(){
         // show all rented utensils
         Scanner sc = new Scanner(System.in);
@@ -143,6 +144,8 @@ public class Customer {
 
 
             sc.close();
+
+          
 
         } catch (Exception e) {
             sc.close();

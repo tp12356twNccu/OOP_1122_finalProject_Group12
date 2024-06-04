@@ -13,7 +13,7 @@ public class RentFrame extends JFrame {
     private JTextArea outputArea;
     private JLabel column1, column2;
     private JTextField text1, text2;
-    private JButton commitButton;
+    private JButton commitButton, lastPageButton;
     private Connection conn;
     private Statement stat;
 
@@ -121,6 +121,16 @@ public class RentFrame extends JFrame {
             }
         });
 
+        lastPageButton = new JButton("Back to Last Page");
+
+        lastPageButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                HomeFrame homeFrame=new HomeFrame(customer);
+                homeFrame.setVisible(true);
+                setVisible(false);
+            }
+        });
+
        
     }
     private void createLayout() {
@@ -138,6 +148,7 @@ public class RentFrame extends JFrame {
         JPanel opePanel = new JPanel(new GridLayout(1, 1));
         
         opePanel.add(commitButton);
+        opePanel.add(lastPageButton);
         
         operatePanel.add(labelPanel);
         operatePanel.add(textPanel);
