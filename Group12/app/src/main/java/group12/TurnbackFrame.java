@@ -88,6 +88,20 @@ public class TurnbackFrame extends JFrame {
                 String utensilID = text2.getText();
                 int uIDint = Integer.parseInt(utensilID);
 
+                // check if the utensil is actually rented by the customer
+                try {
+                    PreparedStatement checkRent = conn.prepareStatement("SELECT * FROM RENTS WHERE Customer_ID = ? AND Utensil_ID = ? AND Returned = 0;");
+                    checkRent.setInt(1, customer.getID());
+                    checkRent.setInt(2, uIDint);
+                    ResultSet checkRentResult = checkRent.executeQuery();
+                    if (!checkRentResult.next()) {
+                        JOptionPane.showMessageDialog(null, "You haven't rented this utensil!", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                } catch (SQLException e) {
+                    outputArea.append("Database error: " + e.getMessage() + "\n");
+                }
+
                 Utensil utensil = new Cup(uIDint); // default to be a cup
                 try{
                     PreparedStatement checkType = conn.prepareStatement("SELECT Utensil_Type FROM UTENSILS WHERE Utensiil_ID = ?;");
